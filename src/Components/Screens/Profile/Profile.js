@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react"
-import Header from "./Header";
-import {Form, FormButton, FormInput} from "../styles/styles";
-import FooterComponent from "./Footer";
+import Header from "../Header";
+import {Form, FormButton, FormInput} from "../../styles/styles";
+import FooterComponent from "../Footer";
 import {useMutation, useQuery} from "@apollo/client";
-import {UPDATE_USER} from "../graphql/mutation";
-import {ErrorP} from "../styles/styles";
-import {GET_USER_PROFILE} from "../graphql/query";
+import {UPDATE_USER} from "../../graphql/mutation";
+import {ErrorP} from "../../styles/styles";
+import {GET_USER_PROFILE} from "../../graphql/query";
 import {useHistory} from "react-router-dom"
 
 export default function Profile() {

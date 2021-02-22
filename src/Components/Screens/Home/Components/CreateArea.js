@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {ErrorP, Form, FormButton, FormInput, FormTextArea} from "../styles/styles";
+import {CreateAreaBackButton, ErrorP, Form, FormButton, FormInput, FormTextArea} from "../styles/styles";
 import {useMutation} from "@apollo/client";
 import {ADD_ITEM} from "../graphql/mutation";
 
@@ -37,6 +37,10 @@ function CreateArea(props) {
                     onAdd();
                     setCredentials({title: "", description: ""})
                 }}>Add</FormButton>
+                <CreateAreaBackButton onClick={event => {
+                    event.preventDefault();
+                    props.hide();
+                }}>Cancel</CreateAreaBackButton>
                 {loading ? <ErrorP>Loading</ErrorP> : null}
                 {error ? <ErrorP>Error:{error}</ErrorP> : null}
             </Form>
