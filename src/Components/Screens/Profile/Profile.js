@@ -1,16 +1,22 @@
 import React, {useState, useEffect} from "react"
-import Header from "../Header";
-import {Form, FormButton, FormInput} from "../../styles/styles";
-import FooterComponent from "../Footer";
+import Header from "../../Header";
+import FooterComponent from "../../Footer";
 import {useMutation, useQuery} from "@apollo/client";
-import {UPDATE_USER} from "../../graphql/mutation";
-import {ErrorP} from "../../styles/styles";
-import {GET_USER_PROFILE} from "../../graphql/query";
+import {UPDATE_USER} from "../../../graphql/mutation";
+import {GET_USER_PROFILE} from "../../../graphql/query";
 import {useHistory} from "react-router-dom"
+import {
+    ProfileFormInput,
+    ProfileFormButton,
+    ProfileForm,
+    ProfileError,
+    ProfileGrid
+} from "../../../styles/ScreenStyles/Profile/styles";
+import {CircularProgress} from "@material-ui/core";
 
 export default function Profile() {
     const history = useHistory()
-    if(localStorage.getItem("token")===null)
+    if (localStorage.getItem("token") === null)
         history.push("/login")
 
     const [{lastName, firstName, email, password}, setProfileCredentials] = useState({
@@ -62,18 +68,21 @@ export default function Profile() {
 
     return <div>
         <Header/>
-        <Form>
-            <FormInput name="lastName" placeholder="Last name" value={lastName} onChange={handleChange}/>
-            <FormInput name="firstName" placeholder="First name" onChange={handleChange} value={firstName}/>
-            <FormInput name="email" placeholder="Email" onChange={handleChange} value={email}/>
-            <FormInput name="password" placeholder="Password" onChange={handleChange} value={password} type="password"/>
-            <FormButton name="change" onClick={event => {
-                event.preventDefault();
-                updateUser()
-            }}>Save changes</FormButton>
-            {loadingCredentials || loadingUpdate ? <ErrorP>Loading</ErrorP> : null}
-            {errorMsg ? <ErrorP>Error:{errorMsg}</ErrorP> : null}
-        </Form>
+        <ProfileGrid>
+            <ProfileForm>
+                <ProfileFormInput name="lastName" placeholder="Last name" value={lastName} onChange={handleChange}/>
+                <ProfileFormInput name="firstName" placeholder="First name" onChange={handleChange} value={firstName}/>
+                <ProfileFormInput name="email" placeholder="Email" onChange={handleChange} value={email}/>
+                <ProfileFormInput name="password" placeholder="Password" onChange={handleChange} value={password}
+                                  type="password"/>
+                <ProfileFormButton name="change" onClick={event => {
+                    event.preventDefault();
+                    updateUser()
+                }}>Save changes</ProfileFormButton>
+                {loadingCredentials || loadingUpdate ? <CircularProgress/> : null}
+                {errorMsg ? <ProfileError>Error:{errorMsg}</ProfileError> : null}
+            </ProfileForm>
+        </ProfileGrid>
         <FooterComponent/>
     </div>
 }

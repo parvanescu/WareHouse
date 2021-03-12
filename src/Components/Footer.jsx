@@ -1,7 +1,7 @@
 import React from "react";
-import {FooterP,Footer} from "../styles/styles";
+import {Footer,FooterP} from "../styles/ComponentStyles/Footer/styles";
 
-function FooterComponent(){
+function FooterComponent() {
     const currentDate = new Date();
 
     return <Footer>

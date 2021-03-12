@@ -1,7 +1,7 @@
 import React, {useState} from "react"
-import {CreateAreaBackButton, ErrorP, Form, FormButton, FormInput, FormTextArea} from "../styles/styles";
+import {CreateForm,CreateFormInput,CreateFormTextArea,CreateFormButton,CreateAreaBackButton,CreateError} from "../../../../styles/ScreenStyles/Home/CreateAreaStyle/styles";
 import {useMutation} from "@apollo/client";
-import {ADD_ITEM} from "../graphql/mutation";
+import {ADD_ITEM} from "../../../../graphql/mutation";
 
 function CreateArea(props) {
 
@@ -28,22 +28,22 @@ function CreateArea(props) {
 
     return (
         <div>
-            <Form>
-                <FormInput name="title" placeholder="title" value={noteInfo.title} onChange={handleChange}/>
-                <FormTextArea name="description" placeholder="description" value={noteInfo.description}
+            <CreateForm>
+                <CreateFormInput name="title" placeholder="title" value={noteInfo.title} onChange={handleChange}/>
+                <CreateFormTextArea name="description" placeholder="description" value={noteInfo.description}
                               onChange={handleChange} rows="3"/>
-                <FormButton onClick={event => {
+                <CreateFormButton onClick={event => {
                     event.preventDefault();
                     onAdd();
                     setCredentials({title: "", description: ""})
-                }}>Add</FormButton>
+                }}>Add</CreateFormButton>
                 <CreateAreaBackButton onClick={event => {
                     event.preventDefault();
                     props.hide();
                 }}>Cancel</CreateAreaBackButton>
-                {loading ? <ErrorP>Loading</ErrorP> : null}
-                {error ? <ErrorP>Error:{error}</ErrorP> : null}
-            </Form>
+                {loading ? <CreateError>Loading</CreateError> : null}
+                {error ? <CreateError>Error:{error}</CreateError> : null}
+            </CreateForm>
         </div>
     );
 }

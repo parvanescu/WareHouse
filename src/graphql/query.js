@@ -24,6 +24,18 @@ const GET_ALL_ITEMS = gql`
   }
 `
 
+const GET_ALL_USERS_ITEMS = gql`
+  query GetAllUsersItems($token: String!){
+    getAllUsersItems(token: $token){
+        id
+        title
+        description
+        userId
+        token
+    }
+  }
+`
+
 const GET_USER_BY_ID = gql`
   query GetUserById($id: String!, $token: String!){
     getUserById(id: $id, token: $token){
@@ -42,6 +54,19 @@ const GET_USER_BY_ID = gql`
   }
 `
 
+const GET_USER_PROFILE = gql`
+  query GetUsersProfile($token: String!){
+    getUsersProfile(token: $token){
+      id
+      first_name
+      last_name
+      email
+      status
+      token
+    }
+  }
+`
+
 const GET_ALL_USERS = gql`
 query GetAllUsers($token: String!){
     getAllUsers(token: $token){
@@ -54,4 +79,4 @@ query GetAllUsers($token: String!){
   }
 `
 
-export {GET_ITEM_BY_ID,GET_ALL_ITEMS,GET_USER_BY_ID,GET_ALL_USERS}
+export {GET_ITEM_BY_ID,GET_ALL_ITEMS,GET_ALL_USERS_ITEMS,GET_USER_BY_ID,GET_USER_PROFILE,GET_ALL_USERS}

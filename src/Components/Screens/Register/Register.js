@@ -1,17 +1,25 @@
 import React, {useState} from "react"
-import {Redirect} from "react-router-dom"
-import {ErrorP, Form, FormButton, FormInput} from "../styles/styles";
+import {Redirect, useHistory} from "react-router-dom"
+import {
+    RegisterFormButton,
+    RegisterFormInput,
+    RegisterForm,
+    RegisterError,
+    RegisterGrid, RegisterButtonsGrid
+} from "../../../styles/ScreenStyles/Register/styles";
 import {useMutation} from "@apollo/client";
-import {REGISTER_USER} from "../graphql/mutation";
-import Header from "./Header";
-import FooterComponent from "./Footer";
+import {REGISTER_USER} from "../../../graphql/mutation";
+import Header from "../../Header";
+import FooterComponent from "../../Footer";
 
 export default function Register() {
+    const history = useHistory()
     const [registerCredentials, setRegisterCredentials] = useState({
         lastName: "",
         firstName: "",
         email: "",
-        password: ""
+        organisation_name: "",
+        CUI: ""
     })
     const [errorMsg, setError] = useState("")
     const [register, {data, loading}] = useMutation(REGISTER_USER)
@@ -29,9 +37,13 @@ export default function Register() {
                     last_name: registerCredentials.lastName,
                     first_name: registerCredentials.firstName,
                     email: registerCredentials.email,
-                    password: registerCredentials.password
+                    organisation_name: registerCredentials.organisation_name,
+                    CUI: registerCredentials.CUI
                 }
-            }).then(res => localStorage.setItem("token", res.data.register.token)).catch(err => setError(err.message))
+            }).then(res => {
+            localStorage.setItem("token", res.data.register.token)
+            history.push("/setPassword&"+res.data.register.id+"&"+res.data.register.organisation_id)
+            }).catch(err => setError(err.message))
     }
 
     if (data)
@@ -39,21 +51,28 @@ export default function Register() {
 
     return <div>
         <Header app={false}/>
-        <Form>
-            <FormInput name="lastName" placeholder="Last name" value={registerCredentials.lastName}
-                       onChange={handleChange}/>
-            <FormInput name="firstName" placeholder="First name" onChange={handleChange}
-                       value={registerCredentials.firstName}/>
-            <FormInput name="email" placeholder="Email" onChange={handleChange} value={registerCredentials.email}/>
-            <FormInput name="password" placeholder="Password" onChange={handleChange}
-                       value={registerCredentials.password} type="password"/>
-            <FormButton onClick={event => {
-                event.preventDefault();
-                registerUser()
-            }}>Register</FormButton>
-            {loading ? <ErrorP>Loading</ErrorP> : null}
-            {errorMsg ? <ErrorP>Error:{errorMsg}</ErrorP> : null}
-        </Form>
+        <RegisterGrid>
+            <RegisterForm>
+                <RegisterFormInput name="lastName" placeholder="Last name" value={registerCredentials.lastName}
+                                   onChange={handleChange}/>
+                <RegisterFormInput name="firstName" placeholder="First name" onChange={handleChange}
+                                   value={registerCredentials.firstName}/>
+                <RegisterFormInput name="email" placeholder="Email" onChange={handleChange}
+                                   value={registerCredentials.email}/>
+                <RegisterFormInput name="organisation_name" placeholder="Organisation name" onChange={handleChange}
+                                   value={registerCredentials.organisation_name}/>
+                <RegisterFormInput name="CUI" placeholder="CUI" onChange={handleChange}
+                                   value={registerCredentials.CUI}/>
+                <RegisterButtonsGrid>
+                    <RegisterFormButton onClick={event => {
+                        event.preventDefault();
+                        registerUser()
+                    }}>Register</RegisterFormButton>
+                </RegisterButtonsGrid>
+                {loading ? <RegisterError>Loading</RegisterError> : null}
+                {errorMsg ? <RegisterError>Error:{errorMsg}</RegisterError> : null}
+            </RegisterForm>
+        </RegisterGrid>
         <FooterComponent/>
     </div>
 }
